@@ -1,5 +1,3 @@
-# ml-project-credit-risk-model
-
 # 🏦 Credit Risk Classification using Logistic Regression
 
 This project is a **credit risk modeling** solution that predicts whether a loan applicant is likely to default or not, based on their demographic, financial, and credit history data. The solution uses **Logistic Regression**, with hyperparameter tuning via **Optuna**, SMOTE for balancing, and a Streamlit UI for live demo.
