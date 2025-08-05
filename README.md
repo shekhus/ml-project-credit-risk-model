@@ -91,4 +91,5 @@ To run the app locally:
 ```bash
 git clone https://github.com/shekhus/ml-project-credit-risk-model.git
 cd credit-risk-model
+pip install -r requirements.txt
 streamlit run main.py
