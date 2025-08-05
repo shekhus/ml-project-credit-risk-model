@@ -2,10 +2,11 @@ import joblib
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
+import os
 
 # Path to the saved model and its components
-MODEL_PATH = 'app\artifacts\model_data.joblib'
-# artifacts\model_data.joblib
+MODEL_PATH = os.path.join(os.path.dirname(__file__), 'artifacts', 'model_data.joblib')
+# MODEL_PATH = 'artifacts/model_data.joblib'
 
 # Load the model and its components
 model_data = joblib.load(MODEL_PATH)
@@ -15,11 +16,11 @@ features = model_data['features']
 cols_to_scale = model_data['cols_to_scale']
 
 
-def prepare_df(age, income, loan_amount, loan_tenure_months, avg_dpd_per_delinquency,
-            delinquency_ratio, credit_utilization_ratio, num_open_accounts,
-            residence_type, loan_purpose, loan_type):
-    # Prepare input data
-     input_data = {
+def prepare_input(age, income, loan_amount, loan_tenure_months, avg_dpd_per_delinquency,
+                    delinquency_ratio, credit_utilization_ratio, num_open_accounts, residence_type,
+                    loan_purpose, loan_type):
+    # Create a dictionary with input values and dummy values for missing features
+    input_data = {
         'age': age,
         'loan_tenure_months': loan_tenure_months,
         'number_of_open_accounts': num_open_accounts,
@@ -45,18 +46,19 @@ def prepare_df(age, income, loan_amount, loan_tenure_months, avg_dpd_per_delinqu
         'bank_balance_at_application': 1,  # Dummy value
         'number_of_closed_accounts': 1,  # Dummy value
         'enquiry_count': 1  # Dummy value
-     }
+    }
 
-        # Ensure all columns for features and cols_to_scale are present
-        df = pd.DataFrame([input_data])
+    # Ensure all columns for features and cols_to_scale are present
+    df = pd.DataFrame([input_data])
 
-        # Ensure only required columns for scaling are scaled
-        df[cols_to_scale] = scaler.transform(df[cols_to_scale])
+    # Ensure only required columns for scaling are scaled
+    df[cols_to_scale] = scaler.transform(df[cols_to_scale])
 
-        # Ensure the DataFrame contains only the features expected by the model
-        df = df[features]
+    # Ensure the DataFrame contains only the features expected by the model
+    df = df[features]
 
-        return df
+    return df
+
 
 def predict(age, income, loan_amount, loan_tenure_months, avg_dpd_per_delinquency,
             delinquency_ratio, credit_utilization_ratio, num_open_accounts,
@@ -69,7 +71,8 @@ def predict(age, income, loan_amount, loan_tenure_months, avg_dpd_per_delinquenc
     probability, credit_score, rating = calculate_credit_score(input_df)
 
     return probability, credit_score, rating
-        
+
+
 def calculate_credit_score(input_df, base_score=300, scale_length=600):
     x = np.dot(input_df.values, model.coef_.T) + model.intercept_
 
