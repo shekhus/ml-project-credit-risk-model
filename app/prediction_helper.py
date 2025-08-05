@@ -33,6 +33,18 @@ def predict(age, income, loan_amount, loan_tenure_months, avg_dpd_per_delinquenc
         'loan_purpose_Home': 1 if loan_purpose == 'Home' else 0,
         'loan_purpose_Personal': 1 if loan_purpose == 'Personal' else 0,
         'loan_type_Unsecured': 1 if loan_type == 'Unsecured' else 0,
+        # additional dummy fields just for scaling purpose
+        'number_of_dependants': 1,  # Dummy value
+        'years_at_current_address': 1,  # Dummy value
+        'zipcode': 1,  # Dummy value
+        'sanction_amount': 1,  # Dummy value
+        'processing_fee': 1,  # Dummy value
+        'gst': 1,  # Dummy value
+        'net_disbursement': 1,  # Computed dummy value
+        'principal_outstanding': 1,  # Dummy value
+        'bank_balance_at_application': 1,  # Dummy value
+        'number_of_closed_accounts': 1,  # Dummy value
+        'enquiry_count': 1  # Dummy value
      }
 
         return probability, credit_score, rating
